@@ -1,12 +1,16 @@
 package com.example.dagger.viewmodel
 
+import com.example.dagger.component.UserComponent
 import com.example.dagger.model.bean.DataSource
 import com.example.dagger.model.bean.DataSourceModuleComponent
 import com.example.dagger.model.bean.LocalUser
 import dagger.Component
 import dagger.Module
 import dagger.Provides
+import dagger.Subcomponent
 import javax.inject.Inject
+import javax.inject.Scope
+import javax.inject.Singleton
 
 
 //module provider学习,针对两种情况可以使用module 和 provider
@@ -23,6 +27,8 @@ class LoginViewModel @Inject constructor(@LocalUser private val dataSource: Data
 //--------------------------
 @Module
 class LoginViewModelModule {
+
+    @Singleton
     @Provides
     fun provideLoginModel(@LocalUser dataSource: DataSource) : LoginViewModel{
         return LoginViewModel(dataSource)
@@ -31,13 +37,23 @@ class LoginViewModelModule {
 //--------------------------
 
 
-//Dependency 和 subComponent学习， 作用是为了不止用一个component去依赖多个module，可以利用component之间互相依赖的能力组成一个依赖链
+//Dependency学习， 作用是各个模块可以单独分开依赖
+//--------------------------
+@Singleton
 @Component(modules = [LoginViewModelModule::class], dependencies = [DataSourceModuleComponent::class])
 interface LoginViewModelModuleComponent{
     fun getUserRemoteData(): LoginViewModel
 }
+//--------------------------
 
 
+//SubComponent学习， 作用是模块间相互耦合
+//--------------------------
+//@Subcomponent(modules = [LoginViewModelModule::class])
+//interface LoginViewModelModuleComponent{
+//    fun getUserComponent(): UserComponent
+//}
+//--------------------------
 
 //普通inject学习
 //--------------------------
@@ -47,3 +63,8 @@ interface LoginViewModelModuleComponent{
 //    }
 //}
 //--------------------------
+
+
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ActivityScope

@@ -1,29 +1,26 @@
 package com.example.dagger.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.dagger.component.DaggerUserComponent
 import com.example.dagger.model.bean.DaggerDataSourceModuleComponent
-import com.example.dagger.viewmodel.DaggerLoginViewModelModuleComponent
-import com.example.dagger.viewmodel.LoginViewModel
+import com.example.dagger.model.bean.DataSourceModuleComponent
+import com.example.dagger.viewmodel.*
 import com.example.kotlinproject.R
+import dagger.Component
+import dagger.Subcomponent
 import javax.inject.Inject
 
-class DaggerActivity : AppCompatActivity() {
+class DaggerV2Activity : AppCompatActivity() {
     @Inject
     lateinit var viewModel: LoginViewModel
-
-//    @Inject
-//    lateinit var viewModel1: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        DaggerUserComponent.builder().loginViewModelModuleComponent(DaggerLoginViewModelModuleComponent.builder()
+        DaggerUserV2Component.builder().loginViewModelModuleComponent(DaggerLoginViewModelModuleComponent.builder()
             .dataSourceModuleComponent(DaggerDataSourceModuleComponent.create()).build())
             .build().inject(this)
 //        DaggerDataSourceModuleComponent.builder().build()//获得dataSourceModuleComponent
@@ -31,9 +28,15 @@ class DaggerActivity : AppCompatActivity() {
 //            .getUserComponent()//获得UserComponent
 //            .inject(this)
 
-        Log.e("tagTd", "dagger==: " + viewModel.hashCode())
-//        Log.e("tagTd", "dagger1==: " + viewModel1.hashCode())
-
-        startActivity(Intent(this, DaggerV2Activity::class.java))
+        Log.e("tagTd", "dagger1==: " + viewModel.hashCode())
     }
 }
+
+//Dependency学习， 作用是各个模块可以单独分开依赖
+//--------------------------
+@ActivityScope
+@Component(dependencies = [LoginViewModelModuleComponent::class])
+interface UserV2Component {
+    fun inject(activity: DaggerV2Activity)
+}
+//--------------------------

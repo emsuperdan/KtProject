@@ -3,6 +3,7 @@
     package="com.example.kotlinproject">
 
     <application
+        android:name="com.example.dagger.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,6 +18,11 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.dagger.view.DaggerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.example.dagger.view.DaggerV2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

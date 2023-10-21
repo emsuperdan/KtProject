@@ -1,5 +1,7 @@
 package com.example.dagger.model.bean
 
+import com.example.dagger.viewmodel.LoginViewModelModule
+import com.example.dagger.viewmodel.LoginViewModelModuleComponent
 import dagger.Component
 import dagger.Module
 import dagger.Provides
@@ -73,7 +75,7 @@ annotation class RemoteUser
 //--------------------------
 
 
-//Dependency 和 subComponent学习， 作用是为了不止用一个component去依赖多个module，可以利用component之间互相依赖的能力组成一个依赖链
+//Dependency学习， 作用是各个模块可以单独分开依赖
 //--------------------------
 @Component(modules = [DataSourceModule::class])
 interface DataSourceModuleComponent{
@@ -85,6 +87,14 @@ interface DataSourceModuleComponent{
 }
 //--------------------------
 
+
+//SubComponent学习， 作用是模块间相互耦合
+//--------------------------
+//@Component(modules = [DataSourceModule::class])
+//interface DataSourceModuleComponent{
+//    fun getLoginViewModelModuleComponent(loginViewModelModule: LoginViewModelModule): LoginViewModelModuleComponent
+//}
+//--------------------------
 
 
 
