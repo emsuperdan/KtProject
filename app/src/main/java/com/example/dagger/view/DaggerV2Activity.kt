@@ -3,6 +3,7 @@ package com.example.dagger.view
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.dagger.App
 import com.example.dagger.model.bean.DaggerDataSourceModuleComponent
 import com.example.dagger.model.bean.DataSourceModuleComponent
 import com.example.dagger.viewmodel.*
@@ -20,13 +21,16 @@ class DaggerV2Activity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        DaggerUserV2Component.builder().loginViewModelModuleComponent(DaggerLoginViewModelModuleComponent.builder()
-            .dataSourceModuleComponent(DaggerDataSourceModuleComponent.create()).build())
+        //全局单利学习
+        //-------------------------
+        DaggerUserV2Component.builder().loginViewModelModuleComponent((application as App).loginViewModelModuleComponent)
             .build().inject(this)
-//        DaggerDataSourceModuleComponent.builder().build()//获得dataSourceModuleComponent
-//            .getLoginViewModelModuleComponent(LoginViewModelModule())//获得loginViewModelModuleComponent
-//            .getUserComponent()//获得UserComponent
-//            .inject(this)
+
+//        DaggerUserV2Component.builder().loginViewModelModuleComponent(
+//            DaggerLoginViewModelModuleComponent.builder()
+//                .dataSourceModuleComponent(DaggerDataSourceModuleComponent.create()).build())
+//            .build().inject(this)
+        //-------------------------
 
         Log.e("tagTd", "dagger1==: " + viewModel.hashCode())
     }
